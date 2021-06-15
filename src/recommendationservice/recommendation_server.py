@@ -18,6 +18,7 @@ import os
 import random
 import time
 import traceback
+import rook
 from concurrent import futures
 
 import googleclouddebugger
@@ -92,6 +93,10 @@ class RecommendationService(demo_pb2_grpc.RecommendationServiceServicer):
 
 if __name__ == "__main__":
     logger.info("initializing recommendationservice")
+
+    rook.start(
+      token="8f58a5a3e0256400b751c0a0f71817d0cfd165525ce71cc7f20dc0291f6ff096"
+    )
 
     try:
       if "DISABLE_PROFILER" in os.environ:

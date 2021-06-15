@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using cartservice.cartstore;
 using cartservice.services;
+using Rook;
 
 namespace cartservice
 {
@@ -16,6 +18,12 @@ namespace cartservice
     {
         public Startup(IConfiguration configuration)
         {
+            Rook.RookOptions options = new Rook.RookOptions() 
+            {
+                token = "8f58a5a3e0256400b751c0a0f71817d0cfd165525ce71cc7f20dc0291f6ff096",
+            };
+            Rook.API.Start(options);
+
             Configuration = configuration;
         }
 
