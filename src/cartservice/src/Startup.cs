@@ -20,7 +20,7 @@ namespace cartservice
         {
             Rook.RookOptions options = new Rook.RookOptions() 
             {
-                token = "8f58a5a3e0256400b751c0a0f71817d0cfd165525ce71cc7f20dc0291f6ff096",
+                token = "",
             };
             Rook.API.Start(options);
 

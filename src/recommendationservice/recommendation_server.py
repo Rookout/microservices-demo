@@ -95,7 +95,7 @@ if __name__ == "__main__":
     logger.info("initializing recommendationservice")
 
     rook.start(
-      token="8f58a5a3e0256400b751c0a0f71817d0cfd165525ce71cc7f20dc0291f6ff096"
+      token=""
     )
 
     try:

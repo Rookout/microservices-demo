@@ -174,7 +174,7 @@ def initStackdriverProfiling():
 if __name__ == '__main__':
 
   rook.start(
-    token="8f58a5a3e0256400b751c0a0f71817d0cfd165525ce71cc7f20dc0291f6ff096",
+    token="",
   )
 
   logger.info('starting the email service in dummy mode.')
