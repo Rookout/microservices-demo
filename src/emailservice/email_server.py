@@ -28,6 +28,7 @@ import demo_pb2
 import demo_pb2_grpc
 from grpc_health.v1 import health_pb2
 from grpc_health.v1 import health_pb2_grpc
+import rook
 
 from opencensus.ext.stackdriver import trace_exporter as stackdriver_exporter
 from opencensus.ext.grpc import server_interceptor
@@ -171,6 +172,8 @@ def initStackdriverProfiling():
 
 if __name__ == '__main__':
   logger.info('starting the email service in dummy mode.')
+
+  rook.start()
 
   # Profiler
   try:
