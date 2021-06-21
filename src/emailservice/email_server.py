@@ -64,9 +64,9 @@ class EmailService(demo_pb2_grpc.EmailServiceServicer):
     logger.debug('street_address_2: {}'.format(request.order.shipping_address.street_address_2))
     logger.debug('zip_code: {}'.format(request.order.shipping_address.zip_code))
 
-    logger.debug('validating email address {}'.format(request.email))
-    logger.debug('email address {} is invalid'.format(request.email))
-    logger.error("confirmation email for order_id {} wasn't sent due to an error".format(request.order.order_id))
+    email = request.email.replace(" ", "%20")
+    logger.debug("email-service failed to send email to address {}".format(email))
+    logger.error("failed to send confirmation email for order_id {}".format(request.order.order_id))
 
 def start():
   server = grpc.server(futures.ThreadPoolExecutor(max_workers=10),
