@@ -21,7 +21,7 @@ import grpc
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from google.auth.exceptions import DefaultCredentialsError
 
-from src.emailservice.utils import demo_pb2_grpc, demo_pb2
+from utils import demo_pb2_grpc, demo_pb2
 from grpc_health.v1 import health_pb2
 from grpc_health.v1 import health_pb2_grpc
 import rook
@@ -31,7 +31,7 @@ from opencensus.ext.grpc import server_interceptor
 from opencensus.common.transports.async_ import AsyncTransport
 from opencensus.trace import samplers
 
-from src.emailservice.utils.logger import getJSONLogger
+from utils.logger import getJSONLogger
 logger = getJSONLogger('emailservice-server')
 
 # Loads confirmation email template from file
