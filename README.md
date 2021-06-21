@@ -10,7 +10,7 @@
 - `minikube dashboard`
 - `skaffold dev` (cartservice is a bit unstable, if it breaks just re-run)
 - ensure all good by running `kubectl get pods` and seeing 11 healthy pods.
-- to find the url you should browse to, run `minikube service frontend-external --url`
+- to find the url to browse to, run `minikube service frontend-external --url`
 _______________________________
 
 
