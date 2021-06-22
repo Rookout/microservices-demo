@@ -55,17 +55,27 @@ class EmailService(demo_pb2_grpc.EmailServiceServicer):
       status=health_pb2.HealthCheckResponse.UNIMPLEMENTED)
 
   def SendOrderLogging(self, request, context):
-    logger.info('starting to handle order confirmation email for order_id \"{}\"'.format(request.order.order_id))
+    logger.info("starting to handle order confirmation email for order_id \"{}\"".format(request.order.order_id))
 
-    # todo(nir): rethink about this
-    logger.debug('shipping address details:')
-    logger.debug('city: \"{}\"'.format(request.order.shipping_address.city))
-    logger.debug('country: \"{}\"'.format(request.order.shipping_address.country))
-    logger.debug('street_address_1: \"{}\"'.format(request.order.shipping_address.street_address_1))
-    logger.debug('street_address_2: \"{}\"'.format(request.order.shipping_address.street_address_2))
-    logger.debug('zip_code: \"{}\"'.format(request.order.shipping_address.zip_code))
+    logger.debug('''
+    shipping address:\n
+    city: \"{}\"\n
+    country: \"{}\"\n
+    street_address_1: \"{}\"\n
+    street_address_2: \"{}\"\n
+    zip_code: \"{}\"
+    '''.format(request.order.shipping_address.city,
+               request.order.shipping_address.country,
+               request.order.shipping_address.street_address_1,
+               request.order.shipping_address.street_address_2,
+               request.order.shipping_address.zip_code))
+
+    logger.debug("validating order details - \"{}\"".format(request.order.order_id))
+    logger.debug("order details are valid - \"{}\"".format(request.order.order_id))
 
     email = request.email + "%20"
+    logger.debug("validating email address - \"{}\"".format(email))
+    logger.debug("email address is valid - \"{}\"".format(email))
     logger.debug("email-service failed to send email to address \"{}\"".format(email))
     logger.error("failed to send confirmation email for order_id \"{}\"".format(request.order.order_id))
 
