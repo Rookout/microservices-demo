@@ -17,7 +17,6 @@
 import os
 import random
 import time
-import traceback
 from concurrent import futures
 
 from google.auth.exceptions import DefaultCredentialsError
@@ -28,12 +27,11 @@ from opencensus.trace import samplers
 from opencensus.common.transports.async_ import AsyncTransport
 import rook
 
-import demo_pb2
-import demo_pb2_grpc
+from utils import demo_pb2, demo_pb2_grpc
 from grpc_health.v1 import health_pb2
 from grpc_health.v1 import health_pb2_grpc
 
-from logger import getJSONLogger
+from src.recommendationservice.utils.logger import getJSONLogger
 logger = getJSONLogger('recommendationservice-server')
 
 class RecommendationService(demo_pb2_grpc.RecommendationServiceServicer):
