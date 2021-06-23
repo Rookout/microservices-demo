@@ -7,4 +7,4 @@ requests==2.24.0
 rook>=0.1.146
 opentracing==2.4.0
 jaeger-client==4.5.0
--e git://github.com/Rookout/python-grpc.git@edd56200af4bb1ebfefa347686102c6dd1a33754#egg=grpcio_opentracing
+-e git://github.com/Rookout/python-grpc.git@35b7456cdc7a91d743f29492e67429fce7f27963#egg=grpcio_opentracing
