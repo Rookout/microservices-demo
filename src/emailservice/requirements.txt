@@ -5,5 +5,6 @@ jinja2==2.11.3
 python-json-logger==0.1.11
 requests==2.24.0
 rook>=0.1.146
-jaeger-client
-grpcio-opentracing
+opentracing==2.4.0
+jaeger-client==4.5.0
+-e git://github.com/Rookout/python-grpc.git@edd56200af4bb1ebfefa347686102c6dd1a33754#egg=grpcio_opentracing
