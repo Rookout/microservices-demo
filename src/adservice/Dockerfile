@@ -25,6 +25,8 @@ COPY . .
 RUN chmod +x gradlew
 RUN ./gradlew installDist
 
+RUN ./gradlew -i downloadRookout
+
 FROM openjdk:8-slim
 
 # Download Stackdriver Profiler Java agent
