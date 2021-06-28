@@ -4,17 +4,17 @@
 - install minikube (for macOs: `brew install minikube`)
 - install skaffold (check out https://skaffold.dev/docs/install/)
 
-
 ### run
 in terminal #1:
 - `minikube start` (to create a local kubernetes cluster)
 
 in terminal #2:
-- `skaffold dev` (cartservice is [a bit unstable](https://github.com/GoogleCloudPlatform/microservices-demo/issues/561), if it breaks try to re-run and see if it works)
+- `skaffold dev`
 
 back terminal #1:
-- either ensure all good by running `kubectl get pods` and seeing 11 healthy pods or run `minikube dashboard` (allow you to see all the minikube assets in a web app).
-- `minikube service frontend-external --url` to expose a local port to the app. copy the url and browse to it.
+- either ensure all good by running `kubectl get pods` and seeing 11 healthy pods or run `minikube dashboard` to see all the minikube assets in a nice web app.
+- `minikube service frontend-external --url` to expose a local port to the app's frontend service.
+- copy the localhost url and browse to it.
 
 ### developing
 while `skaffold dev` is up, you can save changes into the code, the docker image will be rebuilt and the browser will be updated on refresh.
