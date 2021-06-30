@@ -35,6 +35,12 @@ spec:
         env:
         - name: PORT
           value: "9555"
+        - name: JAEGER_SERVICE_NAME
+          value: "microservices-demo-adservice"
+        - name: JAEGER_AGENT_HOST
+          value: "jaeger-agent"
+        - name: JAEGER_AGENT_PORT
+          value: "6831"
         resources:
           requests:
             cpu: 200m
