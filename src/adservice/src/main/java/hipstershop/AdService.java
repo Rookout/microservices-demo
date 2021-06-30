@@ -37,6 +37,10 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import io.opentracing.Tracer;
+import io.opentracing.util.GlobalTracer;
+import io.opentracing.contrib.grpc.TracingServerInterceptor;
+import io.jaegertracing.Configuration;
 
 public final class AdService {
 
@@ -54,9 +58,17 @@ public final class AdService {
     int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "9555"));
     healthMgr = new HealthStatusManager();
 
+    Tracer tracer = Configuration.fromEnv().getTracer();
+    GlobalTracer.register(tracer);
+
+    TracingServerInterceptor tracingInterceptor = TracingServerInterceptor
+            .newBuilder()
+            .withTracer(tracer)
+            .build();
+
     server =
         ServerBuilder.forPort(port)
-            .addService(new AdServiceImpl())
+            .addService(tracingInterceptor.intercept(new AdServiceImpl()))
             .addService(healthMgr.getHealthService())
             .build()
             .start();
@@ -191,26 +203,8 @@ public final class AdService {
         .build();
   }
 
-  private static void initTracing() {
-    return;
-  }
-
-  private static void initJaeger() {
-    return;
-  }
-
   /** Main launches the server from the command line. */
   public static void main(String[] args) throws IOException, InterruptedException {
-//    new Thread(
-//            () -> {
-//              initTracing();
-//            })
-//        .start();
-
-    // Register Jaeger
-//    initJaeger();
-
-    // Start the RPC server. You shouldn't see any output from gRPC before this.
     logger.info("AdService starting.");
     final AdService service = AdService.getInstance();
     service.start();
