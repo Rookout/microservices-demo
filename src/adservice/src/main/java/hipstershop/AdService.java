@@ -58,6 +58,9 @@ public final class AdService {
     int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "9555"));
     healthMgr = new HealthStatusManager();
 
+    System.setProperty(Configuration.JAEGER_SERVICE_NAME, "microservices-demo-adservice");
+    System.setProperty(Configuration.JAEGER_AGENT_HOST, "jaeger-agent");
+    System.setProperty(Configuration.JAEGER_AGENT_PORT, "6831");
     Tracer tracer = Configuration.fromEnv().getTracer();
     GlobalTracer.register(tracer);
 
