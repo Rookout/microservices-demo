@@ -318,13 +318,13 @@ public final class AdService {
 
     new Thread(
             () -> {
-              initStats();
-              initTracing();
+//              initStats();
+//              initTracing();
             })
         .start();
 
     // Register Jaeger
-    initJaeger();
+//    initJaeger();
 
     // Start the RPC server. You shouldn't see any output from gRPC before this.
     logger.info("AdService starting.");
