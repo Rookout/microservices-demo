@@ -117,12 +117,15 @@ public final class AdService {
             allAds.addAll(ads);
           }
         } else {
+          logger.warn("recieved ad request with no context words, will show random ad");
           allAds = service.getRandomAds();
         }
         if (allAds.isEmpty()) {
+          logger.warn("could not find fitting ads will show random ones");
           // Serve random ads.
           allAds = service.getRandomAds();
         }
+        logger.info(String.format("responding to ad request with %d ads", allAds.size()));
         AdResponse reply = AdResponse.newBuilder().addAllAds(allAds).build();
         responseObserver.onNext(reply);
         responseObserver.onCompleted();
@@ -136,6 +139,7 @@ public final class AdService {
   private static final ImmutableListMultimap<String, Ad> adsMap = createAdsMap();
 
   private Collection<Ad> getAdsByCategory(String category) {
+    logger.debug("serving ad for category: " + category);
     return adsMap.get(category);
   }
 
