@@ -9,6 +9,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using cartservice.cartstore;
 using cartservice.services;
+using Rook;
 
 namespace cartservice
 {
@@ -16,6 +17,7 @@ namespace cartservice
     {
         public Startup(IConfiguration configuration)
         {
+            Rook.API.Start();
             Configuration = configuration;
         }
 

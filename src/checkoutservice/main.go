@@ -248,7 +248,7 @@ func (cs *checkoutService) PlaceOrder(ctx context.Context, req *pb.PlaceOrderReq
 		return nil, status.Errorf(codes.Unavailable, "shipping error: %+v", err)
 	}
 
-	_ = cs.emptyUserCart(ctx, req.UserId)
+	// _ = cs.emptyUserCart(ctx, req.UserId)
 
 	orderResult := &pb.OrderResult{
 		OrderId:            orderID.String(),

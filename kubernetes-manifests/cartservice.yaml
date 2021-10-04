@@ -32,13 +32,10 @@ spec:
         image: cartservice
         ports:
         - containerPort: 7070
-        env:
-        - name: REDIS_ADDR
-          value: "redis-cart:6379"
         resources:
           requests:
             cpu: 200m
-            memory: 64Mi
+            memory: 128Mi
           limits:
             cpu: 300m
             memory: 128Mi

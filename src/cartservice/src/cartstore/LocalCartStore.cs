@@ -16,6 +16,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Collections.Generic;
+
 
 namespace cartservice.cartstore
 {
@@ -24,6 +26,7 @@ namespace cartservice.cartstore
         // Maps between user and their cart
         private ConcurrentDictionary<string, Hipstershop.Cart> userCartItems = new ConcurrentDictionary<string, Hipstershop.Cart>();
         private readonly Hipstershop.Cart emptyCart = new Hipstershop.Cart();
+        private static ConcurrentDictionary<string, List<string>> userCartBuffers = new ConcurrentDictionary<string, List<string>>();
 
         public Task InitializeAsync()
         {
@@ -35,11 +38,25 @@ namespace cartservice.cartstore
         public Task AddItemAsync(string userId, string productId, int quantity)
         {
             Console.WriteLine($"AddItemAsync called with userId={userId}, productId={productId}, quantity={quantity}");
+            
             var newCart = new Hipstershop.Cart
-                {
-                    UserId = userId,
-                    Items = { new Hipstershop.CartItem { ProductId = productId, Quantity = quantity } }
-                };
+            {
+                UserId = userId,
+                Items = { new Hipstershop.CartItem { ProductId = productId, Quantity = quantity, Buffer = "a" } }
+            };
+            
+            var newBuffer = new List<string>();
+            newBuffer.Add(new String('r', 1024 * 100 * quantity));
+            
+            userCartBuffers.AddOrUpdate(
+                userId,
+                newBuffer,
+                (k, exVal) => {
+                    exVal.Add(new String('r', 1024 * 100 * quantity));
+                    return exVal;
+                }
+            );
+            
             userCartItems.AddOrUpdate(userId, newCart,
             (k, exVal) =>
             {
@@ -64,6 +81,9 @@ namespace cartservice.cartstore
         {
             Console.WriteLine($"EmptyCartAsync called with userId={userId}");
             userCartItems[userId] = new Hipstershop.Cart();
+            
+            List<string> value;
+            userCartBuffers.TryRemove(userId, out value);
 
             return Task.CompletedTask;
         }

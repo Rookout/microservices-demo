@@ -40,6 +40,8 @@ build:
     context: src/frontend
   - image: adservice
     context: src/adservice
+  - image: loadgenerator
+    context: src/loadgenerator
   tagPolicy:
     gitCommit: {}
   local:
@@ -58,6 +60,7 @@ deploy:
       - ./kubernetes-manifests/recommendationservice.yaml
       - ./kubernetes-manifests/redis.yaml
       - ./kubernetes-manifests/shippingservice.yaml
+      - ./kubernetes-manifests/loadgenerator.yaml
 profiles:
 # "gcb" profile allows building and pushing the images
 # on Google Container Builder without requiring docker

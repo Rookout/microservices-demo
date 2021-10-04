@@ -27,6 +27,7 @@ service CartService {
 message CartItem {
     string product_id = 1;
     int32  quantity = 2;
+    string buffer = 3;
 }
 
 message AddItemRequest {

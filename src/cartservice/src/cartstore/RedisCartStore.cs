@@ -144,15 +144,20 @@ namespace cartservice.cartstore
                 else
                 {
                     cart = Hipstershop.Cart.Parser.ParseFrom(value);
-                    var existingItem = cart.Items.SingleOrDefault(i => i.ProductId == productId);
-                    if (existingItem == null)
-                    {
-                        cart.Items.Add(new Hipstershop.CartItem { ProductId = productId, Quantity = quantity });
+                    ////
+                    for (int i=0; i<quantity; i++) {
+                        cart.Items.Add(new Hipstershop.CartItem { ProductId = productId, Quantity = 1 });
                     }
-                    else
-                    {
-                        existingItem.Quantity += quantity;
-                    }
+                    ////
+                    // var existingItem = cart.Items.SingleOrDefault(i => i.ProductId == productId);
+                    // if (existingItem == null)
+                    // {
+                    //     cart.Items.Add(new Hipstershop.CartItem { ProductId = productId, Quantity = quantity });
+                    // }
+                    // else
+                    // {
+                    //     existingItem.Quantity += quantity;
+                    // }
                 }
 
                 await db.HashSetAsync(userId, new[]{ new HashEntry(CART_FIELD_NAME, cart.ToByteArray()) });
