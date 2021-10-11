@@ -33,6 +33,7 @@ import (
 	"go.opencensus.io/stats/view"
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
+	rook "github.com/Rookout/GoRook"
 )
 
 const (
@@ -93,6 +94,11 @@ func main() {
 		TimestampFormat: time.RFC3339Nano,
 	}
 	log.Out = os.Stdout
+
+	err := rook.Start(map[string]string{"app": "frontendservice"})
+	if err != nil {
+		log.Error(fmt.Sprintf("Got error while setting Rookout: %w", err))
+	}
 
 	if os.Getenv("DISABLE_TRACING") == "" {
 		log.Info("Tracing enabled.")
