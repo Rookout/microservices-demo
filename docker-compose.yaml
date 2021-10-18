@@ -32,6 +32,13 @@ services:
       EMAIL_SERVICE_ADDR: "host.docker.internal:8081"
       CURRENCY_SERVICE_ADDR: "host.docker.internal:7000"
       CART_SERVICE_ADDR: "host.docker.internal:7070"
+      ROOKOUT_CONTROLLER_HOST: 'wss://staging.control.rookout.com'
+      ROOKOUT_CONTROLLER_PORT: '443'
+      ROOKOUT_TOKEN: '[Your token]'
+      ROOKOUT_TAGS: 'frontend'
+      ROOKOUT_LABELS: 'app:microservices-demo,microservice:checkoutservice,type:saas'
+      ROOKOUT_REMOTE_ORIGIN: "https://github.com/rookout/microservices-demo.git"
+      ROOKOUT_DEBUG: "1" 
   emailservice:
     network_mode: bridge
     container_name: emailservice
