@@ -15,6 +15,7 @@
 FROM ubuntu:20.04 as builder
 
 ENV GOLANG_VERSION 1.17
+
 ARG SONARIO_GH_TOKEN
 
 RUN apt update && apt install -y build-essential wget sudo busybox net-tools
@@ -25,15 +26,17 @@ RUN rm -f go${GOLANG_VERSION}.linux-amd64.tar.gz
 ENV PATH "$PATH:/usr/local/go/bin"
 
 RUN apt-get install -y ca-certificates git libffi-dev zlib1g-dev libedit-dev libc++-11-dev libc++abi-11-dev
+
+ENV GO111MODULE=on
+RUN go env -w GOPRIVATE=github.com/Rookout/GoRook
+# Why all the echos? It hides the credentials from showing up partially. If they show up partially then Jenkins won't censor them.
+RUN echo && echo && echo && git config --global url."https://${SONARIO_GH_TOKEN}@github.com".insteadOf "https://github.com"
+ENV GOROOK_OS_TAG=ubuntu20
+
 WORKDIR /src
-
-RUN git clone --depth 1 https://${SONARIO_GH_TOKEN}@github.com/Rookout/GoRook.git -b v0.0.5
-
-# restore dependencies
-COPY go.mod go.sum ./
-RUN go mod download
 COPY . .
-RUN go build -gcflags='-N -l' -o /go/bin/frontend .
+RUN go mod download
+RUN go build -tags=${GOROOK_OS_TAG} -gcflags='-N -l' -o /go/bin/frontend .
 
 FROM builder as release
 
