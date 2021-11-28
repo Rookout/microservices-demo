@@ -28,6 +28,7 @@ ENV PATH "$PATH:/usr/local/go/bin"
 
 RUN apt-get install -y libffi-dev zlib1g-dev libedit-dev libc++-11-dev libc++abi-11-dev build-essential
 
+
 ENV GO111MODULE=on
 RUN go env -w GOPRIVATE=github.com/Rookout/GoRook
 # Why all the echos? It hides the credentials from showing up partially. If they show up partially then Jenkins won't censor them.
