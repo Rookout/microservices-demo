@@ -27,7 +27,7 @@ WORKDIR /src
 COPY . .
 RUN go mod download
 
-RUN go build -gcflags='-N -l' -o /go/bin/shippingservice
+RUN go build -tags=${GOROOK_OS_TAG} -gcflags='-N -l' -o /go/bin/shippingservice
 
 FROM builder AS release
 RUN apk add --update --no-cache ca-certificates
