@@ -50,6 +50,11 @@ spec:
               - name: "Cookie"
                 value: "shop_session-id=x-liveness-probe"
           env:
+          - name: ROOKOUT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: rookout
+                key: token
           - name: PORT
             value: "8080"
           - name: PRODUCT_CATALOG_SERVICE_ADDR

@@ -33,6 +33,11 @@ spec:
         ports:
         - containerPort: 50051
         env:
+        - name: ROOKOUT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: rookout
+              key: token
         - name: PORT
           value: "50051"
         readinessProbe:

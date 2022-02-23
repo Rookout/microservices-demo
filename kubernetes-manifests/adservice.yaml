@@ -35,6 +35,11 @@ spec:
         env:
         - name: PORT
           value: "9555"
+        - name: ROOKOUT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: rookout
+              key: token
         resources:
           requests:
             cpu: 200m

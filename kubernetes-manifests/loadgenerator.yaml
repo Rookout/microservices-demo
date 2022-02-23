@@ -34,6 +34,11 @@ spec:
       - name: main
         image: loadgenerator
         env:
+        - name: ROOKOUT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: rookout
+              key: token
         - name: FRONTEND_ADDR
           value: "frontend:80"
         - name: USERS

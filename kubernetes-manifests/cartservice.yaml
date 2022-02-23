@@ -33,6 +33,11 @@ spec:
         ports:
         - containerPort: 7070
         env:
+        - name: ROOKOUT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: rookout
+              key: token
         - name: REDIS_ADDR
           value: "redis-cart:6379"
         resources:

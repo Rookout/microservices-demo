@@ -34,6 +34,11 @@ spec:
         - name: grpc
           containerPort: 7000
         env:
+        - name: ROOKOUT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: rookout
+              key: token
         - name: PORT
           value: "7000"
         # - name: DISABLE_TRACING
