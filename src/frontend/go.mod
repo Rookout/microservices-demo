@@ -2,6 +2,8 @@ module github.com/GoogleCloudPlatform/microservices-demo/src/frontend
 
 go 1.17
 
+replace github.com/Rookout/GoRook => ./GoRook
+
 require (
 	cloud.google.com/go v0.97.0 // indirect
 	contrib.go.opencensus.io/exporter/jaeger v0.2.0
@@ -24,7 +26,7 @@ require (
 
 require (
 	cloud.google.com/go/profiler v0.1.1
-	github.com/Rookout/GoSDK v0.1.8
+	github.com/Rookout/GoRook v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -49,7 +51,6 @@ require (
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 	gotest.tools v2.2.0+incompatible // indirect
 )
