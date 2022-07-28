@@ -24,7 +24,7 @@ require (
 
 require (
 	cloud.google.com/go/profiler v0.1.1
-	github.com/Rookout/GoSDK v0.1.17
+	github.com/Rookout/GoSDK v0.1.16
 )
 
 require (
@@ -33,7 +33,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fallais/logrus-lumberjack-hook v0.0.0-20210917073259-3227e1ab93b0 // indirect
 	github.com/go-errors/errors v1.4.1 // indirect
-	github.com/gogo/protobuf v1.2.1 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/googleapis/gax-go/v2 v2.1.1 // indirect
