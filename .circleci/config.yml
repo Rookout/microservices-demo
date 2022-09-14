@@ -106,8 +106,8 @@ jobs:
       - run: git clone -b staging git@github.com:Rookout/gitops-demo.git
       - run:
           command: |
-            PUBLISH_VERSION=$(echo $NEW_VERSION | sed 's/inner-999/1/g') \
-            yq -i '.microserviceDemo.email.image.tag = strenv(PUBLISH_VERSION) |
+            PUBLISH_VERSION=$(echo $OLD_VERSION | sed 's/inner-999/1/g') \
+            yq -i -v '.microserviceDemo.email.image.tag = strenv(PUBLISH_VERSION) |
             .microserviceDemo.checkout.image.tag = strenv(PUBLISH_VERSION) |
             .microserviceDemo.recommendation.image.tag = strenv(PUBLISH_VERSION) |
             .microserviceDemo.productcatalog.image.tag = strenv(PUBLISH_VERSION) |
@@ -119,10 +119,28 @@ jobs:
             .microserviceDemo.ad.image.tag = strenv(PUBLISH_VERSION) |
             .sandboxNodejs.image.tag = strenv(PUBLISH_VERSION)' \
             gitops-demo/argocd/apps/values.yaml
-      - run: yq  '.. | select(.name == "microservices-*") '  gitops-demo/argocd/apps/values.yaml
-#      - run: cd gitops-demo && git add argocd/apps/values.yaml
-#      - run: cd gitops-demo && git commit -m "update tutorial-ruby $NEW_VERSION"
-#      - run: cd gitops-demo && git push --set-upstream origin staging
+      - run: cd gitops-demo && git add argocd/apps/values.yaml
+      - run: cd gitops-demo && git commit -m "update microservices-demo $OLD_VERSION"
+      - run: cd gitops-demo && git push --set-upstream origin staging
+      - run: cd gitops-demo && git checkout production && git pull
+      - run:
+          command: |
+            PUBLISH_VERSION=$(echo $OLD_VERSION | sed 's/inner-999/1/g') \
+            yq -i -v '.microserviceDemo.email.image.tag = strenv(PUBLISH_VERSION) |
+            .microserviceDemo.checkout.image.tag = strenv(PUBLISH_VERSION) |
+            .microserviceDemo.recommendation.image.tag = strenv(PUBLISH_VERSION) |
+            .microserviceDemo.productcatalog.image.tag = strenv(PUBLISH_VERSION) |
+            .microserviceDemo.frontend.image.tag = strenv(PUBLISH_VERSION) |
+            .microserviceDemo.payment.image.tag = strenv(PUBLISH_VERSION) |
+            .microserviceDemo.cart.image.tag = strenv(PUBLISH_VERSION) |
+            .microserviceDemo.currency.image.tag = strenv(PUBLISH_VERSION) |
+            .microserviceDemo.shipping.image.tag = strenv(PUBLISH_VERSION) |
+            .microserviceDemo.ad.image.tag = strenv(PUBLISH_VERSION) |
+            .sandboxNodejs.image.tag = strenv(PUBLISH_VERSION)' \
+            gitops-demo/argocd/apps/values.yaml
+      - run: cd gitops-demo && git add argocd/apps/values.yaml
+      - run: cd gitops-demo && git commit -m "update tutorial-ruby $OLD_VERSION"
+      - run: cd gitops-demo && git push --set-upstream origin production
 
   deploy_demo:
     docker:
