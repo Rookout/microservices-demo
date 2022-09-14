@@ -177,7 +177,9 @@ workflows:
           requires:
             - checkout_code_upver
           <<: *filter_master
-      - deploy_demo_argo
+      - deploy_demo_argo:
+          requires:
+            - checkout_code_upver
       - deploy_demo:
           requires:
             - build_and_push_demo_image
