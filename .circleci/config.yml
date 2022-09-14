@@ -119,7 +119,7 @@ jobs:
             .microserviceDemo.ad.image.tag = strenv(PUBLISH_VERSION) |
             .sandboxNodejs.image.tag = strenv(PUBLISH_VERSION)' \
             gitops-demo/argocd/apps/values.yaml
-      - run: yq  '.. | select(.name == "microservices-*") '  argocd/apps/values.yaml
+      - run: yq  '.. | select(.name == "microservices-*") '  gitops-demo/argocd/apps/values.yaml
 #      - run: cd gitops-demo && git add argocd/apps/values.yaml
 #      - run: cd gitops-demo && git commit -m "update tutorial-ruby $NEW_VERSION"
 #      - run: cd gitops-demo && git push --set-upstream origin staging
