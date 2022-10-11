@@ -21,6 +21,10 @@ RUN dotnet restore cartservice.csproj
 COPY . .
 # Fix the issue on Debian 10: https://github.com/dotnet/dotnet-docker/issues/2470
 ENV COMPlus_EnableDiagnostics=0
+ENV ASPNETCORE_hostBuilder:reloadConfigOnChange=true
+ENV DOTNET_hostBuilder:reloadConfigOnChange=true
+ENV ASPNETCORE_hostBuilder__reloadConfigOnChange=false
+
 RUN dotnet publish cartservice.csproj -c release -o /cartservice --no-restore
 
 FROM core as final

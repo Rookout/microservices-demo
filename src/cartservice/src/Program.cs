@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using cartservice;
+using Microsoft.Extensions.Configuration;
 
 CreateHostBuilder(args).Build().Run();
 
@@ -23,4 +25,7 @@ static IHostBuilder CreateHostBuilder(string[] args) =>
         .ConfigureWebHostDefaults(webBuilder =>
         {
             webBuilder.UseStartup<Startup>();
+            webBuilder.ConfigureAppConfiguration((hostingContext, configBuilder) =>
+                configBuilder.Sources.Where(s => s is FileConfigurationSource).ToList()
+                    .ForEach(s => ((FileConfigurationSource)s).ReloadOnChange = false));
         });

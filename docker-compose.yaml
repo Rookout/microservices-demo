@@ -12,7 +12,7 @@ services:
     network_mode: bridge
     container_name: cartservice
     restart: on-failure
-    image: rookout/microservices-demo-cartservice
+    build: src/cartservice/src
     ports:
       - "7070:7070"
     environment:
@@ -34,7 +34,7 @@ services:
       CART_SERVICE_ADDR: "host.docker.internal:7070"
       ROOKOUT_CONTROLLER_HOST: 'wss://staging.control.rookout.com'
       ROOKOUT_CONTROLLER_PORT: '443'
-      ROOKOUT_TOKEN: '[Your token]'
+      ROOKOUT_TOKEN: '9c44458cfad019d8a92563a968e97fae7ac220cac88ea46cdd6830895c8799a7'
       ROOKOUT_TAGS: 'frontend'
       ROOKOUT_LABELS: 'app:microservices-demo,microservice:checkoutservice,type:saas'
       ROOKOUT_REMOTE_ORIGIN: "https://github.com/rookout/microservices-demo.git"
@@ -66,7 +66,7 @@ services:
       AD_SERVICE_ADDR: "host.docker.internal:9555"                  
       ROOKOUT_CONTROLLER_HOST: 'wss://staging.control.rookout.com'
       ROOKOUT_CONTROLLER_PORT: '443'
-      ROOKOUT_TOKEN: '[Your token]'
+      ROOKOUT_TOKEN: '9c44458cfad019d8a92563a968e97fae7ac220cac88ea46cdd6830895c8799a7'
       ROOKOUT_TAGS: 'frontend'
       ROOKOUT_LABELS: 'app:microservices-demo,microservice:frontend,type:saas'
       ROOKOUT_REMOTE_ORIGIN: "https://github.com/rookout/microservices-demo.git"
@@ -84,14 +84,14 @@ services:
     network_mode: bridge
     container_name: productcatalogservice
     restart: on-failure
-    image: rookout/microservices-demo-productcatalogservice 
+    build: src/productcatalogservice 
     ports:
       - "3550:3550"
     environment:
       PORT: "3550"                  
       ROOKOUT_CONTROLLER_HOST: 'wss://staging.control.rookout.com'
       ROOKOUT_CONTROLLER_PORT: '443'
-      ROOKOUT_TOKEN: '[Your token]'      
+      ROOKOUT_TOKEN: '9c44458cfad019d8a92563a968e97fae7ac220cac88ea46cdd6830895c8799a7'      
       ROOKOUT_REMOTE_ORIGIN: "https://github.com/rookout/microservices-demo.git"
       ROOKOUT_DEBUG: "1"            
       ROOKOUT_LABELS: 'app:microservices-demo,microservice:productcatalogservice,type:saas'
@@ -133,7 +133,7 @@ services:
       AD_SERVICE_ADDR: "host.docker.internal:9555"                  
       ROOKOUT_CONTROLLER_HOST: 'wss://staging.control.rookout.com'
       ROOKOUT_CONTROLLER_PORT: '443'
-      ROOKOUT_TOKEN: '[Your token]'      
+      ROOKOUT_TOKEN: '9c44458cfad019d8a92563a968e97fae7ac220cac88ea46cdd6830895c8799a7'      
       ROOKOUT_REMOTE_ORIGIN: "https://github.com/rookout/microservices-demo.git"
       ROOKOUT_DEBUG: "1"
       ROOKOUT_LABELS: 'app:microservices-demo,microservice:shippingservice,type:saas'
