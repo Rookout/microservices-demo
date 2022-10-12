@@ -152,7 +152,7 @@ func main() {
 	var handler http.Handler = r
 	handler = &logHandler{log: log, next: handler} // add logging
 	handler = ensureSessionID(handler)             // add session ID
-	handler = &ochttp.Handler{                     // add opencensus instrumentation
+	handler = &ochttp.Handler{ // add opencensus instrumentation
 		Handler:     handler,
 		Propagation: &b3.HTTPFormat{}}
 
@@ -161,25 +161,20 @@ func main() {
 }
 
 func initJaegerTracing(log logrus.FieldLogger) {
+	agentEndpointURI := "host.docker.internal:6831"
+	collectorEndpointURI := "http://host.docker.internal:14268/api/traces"
 
-	svcAddr := os.Getenv("JAEGER_SERVICE_ADDR")
-	if svcAddr == "" {
-		log.Info("jaeger initialization disabled.")
-		return
-	}
-
-	// Register the Jaeger exporter to be able to retrieve
-	// the collected spans.
 	exporter, err := jaeger.NewExporter(jaeger.Options{
-		Endpoint: fmt.Sprintf("http://%s", svcAddr),
+		AgentEndpoint:     agentEndpointURI,
+		CollectorEndpoint: collectorEndpointURI,
 		Process: jaeger.Process{
 			ServiceName: "frontend",
-		},
-	})
+		}})
 	if err != nil {
 		log.Fatal(err)
 	}
 	trace.RegisterExporter(exporter)
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
 	log.Info("jaeger initialization completed.")
 }
 

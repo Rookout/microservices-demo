@@ -48,14 +48,10 @@ import (
 )
 
 var (
-	cat          pb.ListProductsResponse
-	catalogMutex *sync.Mutex
 	log          *logrus.Logger
 	extraLatency time.Duration
 
 	port = "3550"
-
-	reloadCatalog bool
 )
 
 func init() {
@@ -69,11 +65,10 @@ func init() {
 		TimestampFormat: time.RFC3339Nano,
 	}
 	log.Out = os.Stdout
-	catalogMutex = &sync.Mutex{}
-	err := readCatalogFile(&cat)
-	if err != nil {
-		log.Warnf("could not parse product catalog")
-	}
+	//err := readCatalogFile(&cat)
+	//if err != nil {
+	//	log.Warnf("could not parse product catalog")
+	//}
 }
 
 func main() {
@@ -89,12 +84,12 @@ func main() {
 		log.Info("Tracing disabled.")
 	}
 
-	if os.Getenv("DISABLE_PROFILER") == "" {
-		log.Info("Profiling enabled.")
-		go initProfiling("productcatalogservice", "1.0.0")
-	} else {
-		log.Info("Profiling disabled.")
-	}
+	//if os.Getenv("DISABLE_PROFILER") == "" {
+	//	log.Info("Profiling enabled.")
+	//	go initProfiling("productcatalogservice", "1.0.0")
+	//} else {
+	//	log.Info("Profiling disabled.")
+	//}
 
 	flag.Parse()
 
@@ -110,6 +105,8 @@ func main() {
 		extraLatency = time.Duration(0)
 	}
 
+	svc := &productCatalog{catalogMutex: &sync.Mutex{}}
+
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGUSR1, syscall.SIGUSR2)
 	go func() {
@@ -117,10 +114,10 @@ func main() {
 			sig := <-sigs
 			log.Printf("Received signal: %s", sig)
 			if sig == syscall.SIGUSR1 {
-				reloadCatalog = true
+				svc.reloadCatalog = true
 				log.Infof("Enable catalog reloading")
 			} else {
-				reloadCatalog = false
+				svc.reloadCatalog = false
 				log.Infof("Disable catalog reloading")
 			}
 		}
@@ -130,11 +127,11 @@ func main() {
 		port = os.Getenv("PORT")
 	}
 	log.Infof("starting grpc server at :%s", port)
-	run(port)
+	run(port, svc)
 	select {}
 }
 
-func run(port string) string {
+func run(port string, svc *productCatalog) string {
 	l, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
 		log.Fatal(err)
@@ -148,8 +145,6 @@ func run(port string) string {
 		srv = grpc.NewServer()
 	}
 
-	svc := &productCatalog{}
-
 	pb.RegisterProductCatalogServiceServer(srv, svc)
 	healthpb.RegisterHealthServer(srv, svc)
 	go srv.Serve(l)
@@ -157,23 +152,20 @@ func run(port string) string {
 }
 
 func initJaegerTracing() {
-	svcAddr := os.Getenv("JAEGER_SERVICE_ADDR")
-	if svcAddr == "" {
-		log.Info("jaeger initialization disabled.")
-		return
-	}
-	// Register the Jaeger exporter to be able to retrieve
-	// the collected spans.
+	agentEndpointURI := "host.docker.internal:6831"
+	collectorEndpointURI := "http://host.docker.internal:14268/api/traces"
+
 	exporter, err := jaeger.NewExporter(jaeger.Options{
-		Endpoint: fmt.Sprintf("http://%s", svcAddr),
+		AgentEndpoint:     agentEndpointURI,
+		CollectorEndpoint: collectorEndpointURI,
 		Process: jaeger.Process{
 			ServiceName: "productcatalogservice",
-		},
-	})
+		}})
 	if err != nil {
 		log.Fatal(err)
 	}
 	trace.RegisterExporter(exporter)
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
 	log.Info("jaeger initialization completed.")
 }
 
@@ -212,7 +204,7 @@ func initStackdriverTracing() {
 
 func initTracing() {
 	initJaegerTracing()
-	initStackdriverTracing()
+	//initStackdriverTracing()
 }
 
 func initProfiling(service, version string) {
@@ -237,17 +229,21 @@ func initProfiling(service, version string) {
 	log.Warn("could not initialize Stackdriver profiler after retrying, giving up")
 }
 
-type productCatalog struct{}
+type productCatalog struct {
+	cat           pb.ListProductsResponse
+	catalogMutex  *sync.Mutex
+	reloadCatalog bool
+}
 
-func readCatalogFile(catalog *pb.ListProductsResponse) error {
-	catalogMutex.Lock()
-	defer catalogMutex.Unlock()
+func (p *productCatalog) readCatalogFile() error {
+	p.catalogMutex.Lock()
+	defer p.catalogMutex.Unlock()
 	catalogJSON, err := ioutil.ReadFile("products.json")
 	if err != nil {
 		log.Fatalf("failed to open product catalog json file: %v", err)
 		return err
 	}
-	if err := jsonpb.Unmarshal(bytes.NewReader(catalogJSON), catalog); err != nil {
+	if err := jsonpb.Unmarshal(bytes.NewReader(catalogJSON), &p.cat); err != nil {
 		log.Warnf("failed to parse the catalog JSON: %v", err)
 		return err
 	}
@@ -255,14 +251,16 @@ func readCatalogFile(catalog *pb.ListProductsResponse) error {
 	return nil
 }
 
-func parseCatalog() []*pb.Product {
-	if reloadCatalog || len(cat.Products) == 0 {
-		err := readCatalogFile(&cat)
+func (p *productCatalog) parseCatalog(ctx context.Context) []*pb.Product {
+	ctx, span := trace.StartSpan(ctx, "/parseCatalog")
+	defer span.End()
+	if p.reloadCatalog || len(p.cat.Products) == 0 {
+		err := p.readCatalogFile()
 		if err != nil {
 			return []*pb.Product{}
 		}
 	}
-	return cat.Products
+	return p.cat.Products
 }
 
 func (p *productCatalog) Check(ctx context.Context, req *healthpb.HealthCheckRequest) (*healthpb.HealthCheckResponse, error) {
@@ -273,17 +271,17 @@ func (p *productCatalog) Watch(req *healthpb.HealthCheckRequest, ws healthpb.Hea
 	return status.Errorf(codes.Unimplemented, "health check via Watch not implemented")
 }
 
-func (p *productCatalog) ListProducts(context.Context, *pb.Empty) (*pb.ListProductsResponse, error) {
+func (p *productCatalog) ListProducts(ctx context.Context, req *pb.Empty) (*pb.ListProductsResponse, error) {
 	time.Sleep(extraLatency)
-	return &pb.ListProductsResponse{Products: parseCatalog()}, nil
+	return &pb.ListProductsResponse{Products: p.parseCatalog(ctx)}, nil
 }
 
 func (p *productCatalog) GetProduct(ctx context.Context, req *pb.GetProductRequest) (*pb.Product, error) {
 	time.Sleep(extraLatency)
 	var found *pb.Product
-	for i := 0; i < len(parseCatalog()); i++ {
-		if req.Id == parseCatalog()[i].Id {
-			found = parseCatalog()[i]
+	for i := 0; i < len(p.parseCatalog(ctx)); i++ {
+		if req.Id == p.parseCatalog(ctx)[i].Id {
+			found = p.parseCatalog(ctx)[i]
 		}
 	}
 	if found == nil {
@@ -296,7 +294,7 @@ func (p *productCatalog) SearchProducts(ctx context.Context, req *pb.SearchProdu
 	time.Sleep(extraLatency)
 	// Intepret query as a substring match in name or description.
 	var ps []*pb.Product
-	for _, p := range parseCatalog() {
+	for _, p := range p.parseCatalog(ctx) {
 		if strings.Contains(strings.ToLower(p.Name), strings.ToLower(req.Query)) ||
 			strings.Contains(strings.ToLower(p.Description), strings.ToLower(req.Query)) {
 			ps = append(ps, p)

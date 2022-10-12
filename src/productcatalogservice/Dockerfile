@@ -12,19 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.17-alpine as builder
+FROM golang:1.17-alpine as builder_prep
 RUN apk --update --no-cache add curl make git gcc musl-dev protobuf-dev openssl-libs-static openssl-dev build-base zlib-static
 
 ENV GO111MODULE=on
 ARG ARTIFACTORY_CREDS
 RUN go env -w GONOSUMDB="github.com/Rookout/GoSDK"
-RUN go env -w GOPROXY="https://proxy.golang.org,https://${ARTIFACTORY_CREDS}@rookout.jfrog.io/artifactory/api/go/rookout-go,direct"
+RUN go env -w GOPROXY="https://proxy.golang.org,https://rookout.jfrog.io/artifactory/api/go/rookout-go,direct"
 ENV GOROOK_OS_TAG=alpine314
 
 WORKDIR /src
-COPY . .
+COPY go.mod .
 RUN go mod download
-RUN go build -tags=${GOROOK_OS_TAG},rookout_static -gcflags="all=-dwarflocationlists=true" -o /go/bin/productcatalogservice .
+
+FROM builder_prep AS builder
+WORKDIR /src
+COPY . .
+RUN go build -tags=${GOROOK_OS_TAG},rookout_static -gcflags="all=-N -l" -o /go/bin/productcatalogservice .
 
 FROM builder AS release
 RUN apk add --update --no-cache ca-certificates
@@ -36,12 +40,13 @@ ARG GIT_ORIGIN=unspecified
 ENV ROOKOUT_REMOTE_ORIGIN=$GIT_ORIGIN
 
 
-RUN GRPC_HEALTH_PROBE_VERSION=v0.3.6 && \
-    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
-    chmod +x /bin/grpc_health_probe
+#RUN GRPC_HEALTH_PROBE_VERSION=v0.3.6 && \
+#    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+#    chmod +x /bin/grpc_health_probe
 WORKDIR /productcatalogservice
 COPY --from=builder /go/bin/productcatalogservice /productcatalogservice/server
 COPY products.json .
 EXPOSE 3550
+ENV JAEGER_SERVICE_ADDR="localhost:6831"
 ENTRYPOINT ["/productcatalogservice/server"]
 

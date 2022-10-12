@@ -52,7 +52,7 @@ services:
     network_mode: bridge
     container_name: frontend
     restart: on-failure
-    image: rookout/microservices-demo-frontend 
+    build: src/frontend
     ports:
       - "8080:8080"
     environment:
@@ -93,7 +93,7 @@ services:
       ROOKOUT_CONTROLLER_PORT: '443'
       ROOKOUT_TOKEN: '9c44458cfad019d8a92563a968e97fae7ac220cac88ea46cdd6830895c8799a7'      
       ROOKOUT_REMOTE_ORIGIN: "https://github.com/rookout/microservices-demo.git"
-      ROOKOUT_DEBUG: "1"            
+      ROOKOUT_DEBUG: "1"
       ROOKOUT_LABELS: 'app:microservices-demo,microservice:productcatalogservice,type:saas'
       ROOKOUT_TAGS: 'productcatalogservice'
   recommendationservice:
@@ -146,7 +146,25 @@ services:
     ports:
       - "7000:7000"
     environment:
-      PORT: "7000"      
+      PORT: "7000" 
+  all-in-one:
+        network_mode: bridge
+        container_name: jaeger
+        environment:
+            - 'COLLECTOR_ZIPKIN_HOST_PORT=:9411'
+            - 'COLLECTOR_OTLP_ENABLED=true'
+        ports:
+            - '6831:6831/udp'
+            - '6832:6832/udp'
+            - '5778:5778'
+            - '16686:16686'
+            - '4317:4317'
+            - '4318:4318'
+            - '14250:14250'
+            - '14268:14268'
+            - '14269:14269'
+            - '9411:9411'
+        image: 'jaegertracing/all-in-one:1.38'     
 # in mac the volume is located at: docker inspect project_pgdata
 volumes:  
   redis-microservices-volume:
