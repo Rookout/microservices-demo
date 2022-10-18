@@ -255,6 +255,7 @@ func (p *productCatalog) parseCatalog(ctx context.Context) []*pb.Product {
 	ctx, span := trace.StartSpan(ctx, "/parseCatalog")
 	defer span.End()
 	if p.reloadCatalog || len(p.cat.Products) == 0 {
+		log.Debugf("reading catalog file (cache missed)")
 		err := p.readCatalogFile()
 		if err != nil {
 			return []*pb.Product{}
