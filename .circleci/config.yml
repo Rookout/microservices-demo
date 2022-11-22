@@ -117,7 +117,6 @@ jobs:
             .microserviceDemo.currency.image.tag = strenv(PUBLISH_VERSION) |
             .microserviceDemo.shipping.image.tag = strenv(PUBLISH_VERSION) |
             .microserviceDemo.ad.image.tag = strenv(PUBLISH_VERSION)' \
-
             gitops-demo/argocd/apps/values.yaml
       - run: cd gitops-demo && git add argocd/apps/values.yaml
       - run: cd gitops-demo && git commit -m "update microservices-demo $NEW_VERSION"
