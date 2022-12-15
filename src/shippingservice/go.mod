@@ -21,7 +21,7 @@ require (
 
 require (
 	cloud.google.com/go/profiler v0.1.1
-	github.com/Rookout/GoSDK v0.1.33
+	github.com/Rookout/GoSDK v0.1.34
 )
 
 require (
