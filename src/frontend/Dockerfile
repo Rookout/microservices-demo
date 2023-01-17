@@ -27,7 +27,7 @@ COPY . .
 RUN go mod download
 RUN go build -tags=${GOROOK_OS_TAG},rookout_static -gcflags="all=-dwarflocationlists=true" -o /go/bin/frontend .
 
-FROM builder as release
+FROM golang:1.17-alpine as release
 RUN apk add --update --no-cache ca-certificates
 
 ARG GIT_COMMIT=unspecified
