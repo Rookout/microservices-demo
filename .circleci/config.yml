@@ -38,6 +38,7 @@ references:
     run:
       command: |
         mkdir -p ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+        python3 -m pip install --upgrade --user "setuptools<66.0.0"        
         pip install -e git+ssh://git@github.com/Rookout/build_tools.git#egg=rookout_build_tools
   filter_master: &filter_master
     filters:

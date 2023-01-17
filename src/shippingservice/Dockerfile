@@ -27,7 +27,7 @@ RUN go mod download
 
 RUN go build -tags=${GOROOK_OS_TAG},rookout_static -gcflags="all=-dwarflocationlists=true" -o /go/bin/shippingservice
 
-FROM builder AS release
+FROM golang:1.17-alpine AS release
 RUN apk add --update --no-cache ca-certificates
 
 ARG GIT_COMMIT=unspecified
