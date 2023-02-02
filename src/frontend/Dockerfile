@@ -17,9 +17,6 @@ FROM golang:1.17-alpine as builder
 RUN apk --update --no-cache add curl make git gcc musl-dev protobuf-dev openssl-libs-static openssl-dev build-base zlib-static
 
 ENV GO111MODULE=on
-ARG ARTIFACTORY_CREDS
-RUN go env -w GONOSUMDB="github.com/Rookout/GoSDK"
-RUN go env -w GOPROXY="https://proxy.golang.org,https://${ARTIFACTORY_CREDS}@rookout.jfrog.io/artifactory/api/go/rookout-go,direct"
 ENV GOROOK_OS_TAG=alpine314
 
 WORKDIR /src
