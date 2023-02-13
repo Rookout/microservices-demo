@@ -13,7 +13,7 @@ require (
 	github.com/uber/jaeger-client-go v2.21.1+incompatible // indirect
 	go.opencensus.io v0.23.0
 	golang.org/x/net v0.0.0-20211105192438-b53810dc28af
-	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	google.golang.org/api v0.58.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20211104193956-4c6863e31247 // indirect
@@ -22,7 +22,7 @@ require (
 
 require (
 	cloud.google.com/go/profiler v0.1.1
-	github.com/Rookout/GoSDK v0.1.36
+	github.com/Rookout/GoSDK v0.1.37
 )
 
 require (
@@ -45,5 +45,5 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
-	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 )
