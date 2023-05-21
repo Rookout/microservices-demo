@@ -8,7 +8,7 @@ require (
 	contrib.go.opencensus.io/exporter/stackdriver v0.5.0
 	github.com/golang/protobuf v1.5.3
 	github.com/google/pprof v0.0.0-20211008130755-947d60d73cc0 // indirect
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.2
 	github.com/uber/jaeger-client-go v2.21.1+incompatible // indirect
 	go.opencensus.io v0.23.0
 	golang.org/x/net v0.0.0-20211105192438-b53810dc28af
@@ -21,7 +21,7 @@ require (
 
 require (
 	cloud.google.com/go/profiler v0.1.1
-	github.com/Rookout/GoSDK v0.1.42
+	github.com/Rookout/GoSDK v0.1.43
 )
 
 require (
