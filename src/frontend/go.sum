@@ -61,8 +61,8 @@ github.com/Masterminds/goutils v1.1.1/go.mod h1:8cTjp+g8YejhMuvIA5y2vz3BpJxksy86
 github.com/Masterminds/semver v1.5.0/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/Masterminds/sprig v2.22.0+incompatible/go.mod h1:y6hNFY5UBTIWBxnzTeuNhlNS5hqE0NB0E6fgfo2Br3o=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
-github.com/Rookout/GoSDK v0.1.43 h1:rloFxENUOY8EdFmLcafmEFS8EhznmQg6loyfGAVGOfA=
-github.com/Rookout/GoSDK v0.1.43/go.mod h1:4TxlzXHwogs4hNhGzB9GgJjZBjo/XdmOrVfLYZ5BbUg=
+github.com/Rookout/GoSDK v0.1.44 h1:6ORNzf35Sie/ub5nTVTAB+0lIIADfFvdG7BwC/v1cl8=
+github.com/Rookout/GoSDK v0.1.44/go.mod h1:4TxlzXHwogs4hNhGzB9GgJjZBjo/XdmOrVfLYZ5BbUg=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash v1.1.0/go.mod h1:XrSqR1VqqWfGrhpAt58auRo0WTKS1nRRg3ghfAqPWnc=
