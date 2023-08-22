@@ -12,7 +12,7 @@ require (
 	github.com/uber/jaeger-client-go v2.21.1+incompatible // indirect
 	go.opencensus.io v0.23.0
 	golang.org/x/net v0.0.0-20211105192438-b53810dc28af
-	golang.org/x/sys v0.10.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
 	google.golang.org/api v0.58.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20211104193956-4c6863e31247 // indirect
@@ -21,7 +21,7 @@ require (
 
 require (
 	cloud.google.com/go/profiler v0.1.1
-	github.com/Rookout/GoSDK v0.1.46
+	github.com/Rookout/GoSDK v0.1.47
 )
 
 require (
@@ -32,10 +32,10 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/google/go-cmp v0.5.6 // indirect
-	github.com/google/uuid v1.3.0 // indirect
+	github.com/google/uuid v1.3.1 // indirect
 	github.com/googleapis/gax-go/v2 v2.1.1 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
-	github.com/hashicorp/golang-lru v0.5.4 // indirect
+	github.com/hashicorp/golang-lru v1.0.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/yhirose/go-peg v0.0.0-20210804202551-de25d6753cf1 // indirect
