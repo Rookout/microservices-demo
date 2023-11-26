@@ -104,7 +104,7 @@ jobs:
       - *load_version
       - *install_deps
       - run: git config --global user.email "sonario@rookout.com" && git config --global user.name "sonariorobot"
-      - run: git clone -b staging git@github.com:Rookout/gitops.git
+      - run: git clone git@github.com:Rookout/gitops.git
       - run:
           command: |
             PUBLISH_VERSION=$(echo $NEW_VERSION | sed 's/inner-999/1/g') \
