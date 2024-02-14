@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.17-alpine as builder
+FROM golang:1.18-alpine as builder
 RUN apk --update --no-cache add curl make git gcc musl-dev protobuf-dev openssl-libs-static openssl-dev build-base zlib-static
 
 ENV GO111MODULE=on
@@ -23,7 +23,7 @@ COPY . .
 RUN go mod download
 RUN go build -tags=${GOROOK_OS_TAG},rookout_static -gcflags="all=-dwarflocationlists=true" -o /go/bin/productcatalogservice .
 
-FROM golang:1.17-alpine AS release
+FROM golang:1.18-alpine AS release
 RUN apk add --update --no-cache ca-certificates
 
 ARG GIT_COMMIT=unspecified
